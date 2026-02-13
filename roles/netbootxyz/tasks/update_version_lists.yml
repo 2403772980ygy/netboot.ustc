@@ -1,0 +1,25 @@
+---
+- name: Combine overrides with release defaults
+  ansible.builtin.set_fact:
+    _releases: "{{ releases | combine(release_overrides, recursive=True) }}"
+  when: release_overrides is defined
+
+- name: Set releases with user overrides
+  ansible.builtin.set_fact:
+    releases: "{{ _releases }}"
+  when: release_overrides is defined
+  
+- name: Update version list for multiple distributions
+  vars:
+    update_targets:
+      - dist: archlinux
+        url: "{{ releases.archlinux.mirror }}/{{ releases.archlinux.base_dir }}/iso"
+      - dist: centos
+        url: "{{ releases.centos.mirror }}/{{ releases.centos.base_dir }}"
+      - dist: almalinux
+        url: "{{ releases.almalinux.mirror }}/{{ releases.almalinux.base_dir }}"
+  ansible.builtin.include_tasks: update_version_list_single.yml
+  loop: "{{ update_targets }}"
+  loop_control:
+    loop_var: update_target
+    

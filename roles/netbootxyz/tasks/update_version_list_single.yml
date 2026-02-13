@@ -1,0 +1,13 @@
+---
+- name: Fetch data for parsing
+  uri:
+    url: "{{ update_target.url | regex_replace('^(?!https?://)', 'http://') }}"
+    return_content: yes
+  register: dir_listing
+
+- name: Update version list for single distribution
+  ansible.builtin.set_fact:
+    releases: >-
+      {{
+        releases | update_versions(dir_listing.content, update_target.dist | string)
+      }}

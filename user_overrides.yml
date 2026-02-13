@@ -21,11 +21,9 @@ make_num_jobs: 1
 # bootloader_http_enabled: true
 
 # set release overrides from standard netboot.xyz defaults
-# release_overrides:
-#   alpinelinux:
-#     name: "Alpine Linux"
-#   fedora:
-#     mirror: "mirrors.kernel.org"
+release_overrides:
+  archlinux:
+    mirror: mirrors.ustc.edu.cn
 
 # set utilitiesefi_overrides from standard netboot.xyz defaults for EFI utilities
 # utilitiesefi_overrides:
@@ -43,3 +41,9 @@ early_menu_contents: |
    ### used to set early ipxe options such as custom console & logo
    # console --x 1024 --y 768
    # console --picture https://boot.netboot.xyz/logo.png
+
+# Hack for mirroring endpoint content
+upstream_endpoint: http://github.com/netbootxyz
+live_endpoint: http://github.com/netbootxyz
+endpoint_mirror_base_directory: endpoints/
+

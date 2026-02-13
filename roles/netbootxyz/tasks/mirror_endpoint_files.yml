@@ -1,0 +1,36 @@
+---
+- name: Generate download paths
+  ansible.builtin.set_fact:
+    endpoint_file_list: >-
+      {{
+        endpoints | download_paths(upstream_endpoint, netbootxyz_root ~ '/' ~ endpoint_mirror_base_directory)
+      }}
+
+- name: Create download directories
+  ansible.builtin.file:
+    path: "{{ item.path | dirname }}"
+    mode: 0755
+    state: directory
+  loop: "{{ endpoint_file_list }}"
+
+- name: Cut list for debugging
+  ansible.builtin.set_fact:
+    endpoint_file_list: "{{ endpoint_file_list[0:3] }}"
+
+- name: Download files
+  ansible.builtin.get_url:
+    dest: "{{ item.path }}"
+    url: "{{ item.url }}"
+    decompress: false
+    mode: 0644
+  register: download_result
+  until: download_result is succeeded
+  retries: 3
+  loop: "{{ endpoint_file_list }}"
+
+- name: Update endpoints to match local path
+  ansible.builtin.set_fact:
+    endpoint >-
+      {{
+        endpoints | new_paths('/' ~ endpoint_mirror_base_directory )
+      }}
