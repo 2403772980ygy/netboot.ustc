@@ -17,7 +17,11 @@ goto vyos_boot
 
 :vyos_boot
 imgfree
+{% if endpoints['vyos-rolling'].use_endpoint_mirror %}
 set url ${live_endpoint}{{ endpoints['vyos-rolling'].path }}
+{% else %}
+set url ${upstream_endpoint}{{ endpoints['vyos-rolling'].path }}
+{% endif %}
 kernel ${url}vmlinuz boot=live components hostname=vyos username=live nopersistence noautologin union=overlay console=tty0 net.ifnames=0 biosdevname=0 fetch=${url}filesystem.squashfs {{ kernel_params }}
 initrd ${url}initrd
 

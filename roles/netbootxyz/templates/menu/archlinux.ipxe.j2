@@ -48,7 +48,11 @@ goto archlinux_exit
 :boot32
 {% for key, value in endpoints.items() | sort %}
 {% if key == "archlinux-32" %}
+{% if value.use_endpoint_mirror %}
 set arch32_url ${live_endpoint}{{ value.path }}
+{% else %}
+set arch32_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 {% endif %}
 {% endfor %}
 imgfree

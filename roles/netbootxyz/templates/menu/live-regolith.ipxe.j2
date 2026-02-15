@@ -11,8 +11,13 @@ choose live_version || goto live_exit
 goto ${live_version}
 
 :current
+{% if endpoints["regolith-current"].use_endpoint_mirror %}
 set squash_url ${live_endpoint}{{ endpoints["regolith-current"].path }}filesystem.squashfs
 set kernel_url ${live_endpoint}{{ endpoints["regolith-current"].path }}
+{% else %}
+set squash_url ${upstream_endpoint}{{ endpoints["regolith-current"].path }}filesystem.squashfs
+set kernel_url ${upstream_endpoint}{{ endpoints["regolith-current"].path }}
+{% endif %}
 goto current-boot
 
 :current-boot

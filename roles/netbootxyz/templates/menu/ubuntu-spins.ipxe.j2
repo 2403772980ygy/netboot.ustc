@@ -19,7 +19,11 @@ goto ${ubuntu_spins}
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "ubuntu-spins" %}
 :spins_{{ value.version }}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 goto boot
 {% endif %}
 {% endfor %}

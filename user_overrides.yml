@@ -47,3 +47,21 @@ upstream_endpoint: http://github.com/netbootxyz
 live_endpoint: http://github.com/netbootxyz
 endpoint_mirror_base_directory: endpoints/
 
+# We may mirror partially, and use some hacks to make the boot scripts load the correct assets
+endpoint_mirror_oss:
+  # The following oss need little space to mirror, so we attempt these first
+  - breakin
+  - dban
+  - devuan
+  # The following oss are rather large, but very commonly seen so are mirrored
+  - kali
+  - oracle
+  - gparted
+  - bootrepair
+  # The following have rather special scripts so I just mirror them
+  - freebsd
+  - shredos
+  # The following have special scripts so you should NOT mirror them
+  # - dts
+  # The following is not currently available
+  # - feren

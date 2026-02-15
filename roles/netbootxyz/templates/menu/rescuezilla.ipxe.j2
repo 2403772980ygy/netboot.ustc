@@ -17,7 +17,11 @@ goto ${rescuezilla_version}
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "rescuezilla" %}
 :{{ value.os }}_{{ value.version }}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 imgfree
 kernel ${kernel_url}vmlinuz ip=dhcp boot=casper netboot=url url=${kernel_url}filesystem.squashfs {{ kernel_params }}
 initrd ${kernel_url}initrd

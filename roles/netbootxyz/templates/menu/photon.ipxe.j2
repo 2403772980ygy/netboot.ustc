@@ -27,7 +27,11 @@ iseq ${os_arch} aarch64 && goto aarch64 ||
 :x86_64
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "vmware-photon" and value.arch == "x86_64" %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set photon_version {{ value.version }}
 {% endif %}
 {% endfor %}
@@ -35,7 +39,11 @@ goto photon_boot
 :aarch64
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "vmware-photon" and value.arch == "aarch64" %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set photon_version {{ value.version }}
 {% endif %}
 {% endfor %}

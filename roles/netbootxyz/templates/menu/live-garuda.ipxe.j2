@@ -21,8 +21,13 @@ goto ${menu}
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "garuda" %}
 :{{ value.version }}-{{ value.flavor }}
+{% if value.use_endpoint_mirror %}
 set fetch_url ${live_endpoint}{{ value.path }}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set fetch_url ${upstream_endpoint}{{ value.path }}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 goto boot
 
 {% endif %}

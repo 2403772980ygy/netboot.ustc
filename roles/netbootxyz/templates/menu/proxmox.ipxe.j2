@@ -90,7 +90,11 @@ goto boot-pbs
 :boot-pbs
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "proxmox-backup-server" %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set proxmox_version {{ value.version }}
 {% endif %}
 {% endfor %}
@@ -103,7 +107,11 @@ boot
 :boot-pmg
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "proxmox-mailgateway" %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set proxmox_version {{ value.version }}
 {% endif %}
 {% endfor %}
@@ -116,7 +124,11 @@ boot
 :boot-pdm
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "proxmox-datacenter-manager" %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set proxmox_version {{ value.version }}
 {% endif %}
 {% endfor %}
@@ -129,7 +141,11 @@ boot
 :boot-pve
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "proxmox-ve" %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set proxmox_version {{ value.version }}
 {% endif %}
 {% endfor %}

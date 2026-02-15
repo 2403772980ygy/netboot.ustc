@@ -36,7 +36,11 @@ goto ${flavor} ||
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "fedora" %}
 :{{ key }}
+{% if value.use_endpoint_mirror %}
 set live_url ${live_endpoint}{{ value.path }}
+{% else %}
+set live_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 goto boot
 {% endif %}
 {% endfor %}

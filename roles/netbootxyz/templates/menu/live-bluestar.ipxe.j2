@@ -19,7 +19,11 @@ goto ${live_version}
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "bluestar" %}
 :{{ value.version }}
+{% if value.use_endpoint_mirror %}
 set url ${live_endpoint}{{ value.path }}
+{% else %}
+set url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 goto boot
 
 {% endif %}

@@ -19,7 +19,11 @@ goto blackarch_boot
 
 :blackarch_boot
 imgfree
+{% if endpoints['blackarch-installer'].use_endpoint_mirror %}
 set url ${live_endpoint}{{ endpoints['blackarch-installer'].path }}
+{% else %}
+set url ${upstream_endpoint}{{ endpoints['blackarch-installer'].path }}
+{% endif %}
 kernel ${url}vmlinuz archisobasedir=blackarch ${ipparam} archiso_http_srv=${url} {{ kernel_params }}
 initrd ${url}initrd
 boot

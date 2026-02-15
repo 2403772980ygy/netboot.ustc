@@ -32,7 +32,11 @@ goto harvester
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "harvester" %}
 :harvester_url
+{% if value.use_endpoint_mirror %}
 set harvester_url ${live_endpoint}{{ value.path }}
+{% else %}
+set harvester_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 goto harvester_boot
 {% endif %}
 {% endfor %}

@@ -12,8 +12,13 @@ choose live_version || goto live_exit
 goto ${live_version}
 
 :6
+{% if value.use_endpoint_mirror %}
 set squash_url ${live_endpoint}{{ endpoints["linux-lite-5-squash"].path }}filesystem.squashfs
 set kernel_url ${live_endpoint}{{ endpoints["linux-lite-5-squash"].path }}
+{% else %}
+set squash_url ${upstream_endpoint}{{ endpoints["linux-lite-5-squash"].path }}filesystem.squashfs
+set kernel_url ${upstream_endpoint}{{ endpoints["linux-lite-5-squash"].path }}
+{% endif %}
 goto boot-6
 
 :boot-6

@@ -23,7 +23,11 @@ goto ${tails_version}
 {% for key, value in endpoints.items() | sort %}
 {% if value.os == "tails" %}
 :tails_{{ value.version }}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set iso_version {{ value.version }}
 goto boot
 {% endif %}

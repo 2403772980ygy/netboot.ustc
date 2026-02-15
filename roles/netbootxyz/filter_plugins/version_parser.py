@@ -1,5 +1,6 @@
 import re
 from hashlib import md5
+from copy import deepcopy
 
 class FilterModule(object):
 
@@ -43,16 +44,24 @@ class FilterModule(object):
         ret[distro]["versions"] = self.parse_versions(content, distro)
         return ret
 
-    def download_paths(self, endpoints, upstream, path):
+    def download_paths(self, endpoints, upstream, path, oss=None):
         ret = []
         for dist, obj in endpoints.items():
+            if oss and obj["os"] not in oss:
+                continue
+            op = str(obj["path"])
+            subdir = md5(op.encode()).hexdigest()
             for ff in obj["files"]:
-                ret.append({"url":upstream+obj["path"]+ff,"path":path + md5(str(obj["path"]).encode()).hexdigest() + "/" + ff})
+                ret.append({"url": f"{upstream}{op}{ff}", "path": f"{path}{subdir}/{ff}"})
         return ret
 
-    def new_paths(self, endpoints, path):
+    def new_paths(self, endpoints, path, lst=None):
         ret = endpoints
         for dist, obj in endpoints.items():
-            ret[str(dist)]["path"] = path + md5(str(obj["path"]).encode()).hexdigest() + "/"
+            if not lst or obj["os"] in lst:
+                ret[str(dist)]["path"] = "/" + path + md5(str(obj["path"]).encode()).hexdigest() + "/"
+                ret[str(dist)]["use_endpoint_mirror"] = True
+            else:
+                ret[str(dist)]["use_endpoint_mirror"] = False
         return ret
     

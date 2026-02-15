@@ -95,7 +95,11 @@ boot
 :{{ value.codename }}_{{ value.arch }}
 {% for key, value in endpoints.items() | sort %}
 {% if key == kernel_name %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 set codename {{ value.codename }}
 set version_number {{ value.version }}
 {% endif %}

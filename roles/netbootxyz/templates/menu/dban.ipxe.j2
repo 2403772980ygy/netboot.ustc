@@ -4,7 +4,11 @@ goto ${menu} ||
 
 :dban_menu
 menu DBAN {{ endpoints.dban.version }} (Darik's Boot and Nuke)
+{% if endpoints.dban.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ endpoints.dban.path }}DBAN.BZI
+{% else %}
+set kernel_url ${upstream_endpoint}{{ endpoints.dban.path }}DBAN.BZI
+{% endif %}
 item --gap THIS SOFTWARE DESTROYS DATA
 item --gap EVERY BOOT OPTION IS DESTRUCTIVE
 item --gap DO NOT PROCEED IF YOU DO NOT KNOW WHAT THIS IS

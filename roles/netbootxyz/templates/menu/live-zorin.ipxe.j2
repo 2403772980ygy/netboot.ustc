@@ -33,10 +33,18 @@ goto ${flavor} ||
 {% if value.os == "zorin" and 'squash' in key %}
 {% set kernel_name = value.kernel %}
 :{{ key }}
+{% if value.use_endpoint_mirror %}
 set squash_url ${live_endpoint}{{ value.path }}filesystem.squashfs
+{% else %}
+set squash_url ${upstream_endpoint}{{ value.path }}filesystem.squashfs
+{% endif %}
 {% for key, value in endpoints.items() | sort %}
 {% if key == kernel_name %}
+{% if value.use_endpoint_mirror %}
 set kernel_url ${live_endpoint}{{ value.path }}
+{% else %}
+set kernel_url ${upstream_endpoint}{{ value.path }}
+{% endif %}
 {% endif %}
 {% endfor %}
 goto boot

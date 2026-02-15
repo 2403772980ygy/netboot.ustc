@@ -17,7 +17,11 @@ goto zen_boot
 
 :zen_boot
 imgfree
+{% if endpoints.zeninstall.use_endpoint_mirror %}
 set url ${live_endpoint}{{ endpoints.zeninstall.path }}
+{% else %}
+set url ${upstream_endpoint}{{ endpoints.zeninstall.path }}
+{% endif %}
 kernel ${url}vmlinuz archisobasedir=arch ${ipparam} archiso_http_srv=${url} {{ kernel_params }}
 initrd ${url}initrd
 boot
